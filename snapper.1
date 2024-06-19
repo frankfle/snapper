@@ -1,0 +1,127 @@
+.\"Modified from man(1) of FreeBSD, the NetBSD mdoc.template, and mdoc.samples.
+.\"See Also:
+.\"man mdoc.samples for a complete listing of options
+.\"man mdoc for the short list of editing options
+.\"/usr/share/misc/mdoc.template
+.Dd 11/6/2008               \" DATE 
+.Dt snapper 1      \" Program name and manual section number 
+.Os Darwin
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm snapper
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Pp
+.Nm
+-p <path> -i <ignore> -f <field delimiter> -r <record delimiter> [ -v | -V ] -h -o <output file> -a -H -D -q -c <column string> -s <sort token> -C <configuration file>
+.Pp
+.Pp
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+.Nm
+is a snapshot utility.  It scans a directory structure and outputs a record for each file.  The format and content of the record can be specified, and certain files (and their children) can be ignored.
+.Pp
+.Pp                      \" Inserts a space
+.Sh OPTIONS
+.Pp
+.Pp
+.Bl -tag -width -indent \" Begins a tagged list
+.It -v
+Verbose output
+.It -V
+Mega-verbose output. (implies -v)  You'll be sorry if you do this one....
+.It -q
+Quiet mode, surpresses all output except for errors.
+.It -h
+Help (Print usage statement)
+.It -a
+Scan across physical disks
+.It -D
+Do not print records for directories
+.It -H
+Print headers at the top of the file
+.It -o
+Path to write the file to (otherwise, it goes to standard out)
+.It -i
+Ignores specified file.  Multiple entries are accepted.  Accepts absolute paths (starts with a '/'), which only match absolute paths, or names (which DO NOT start with a '/'), which could mach any filename.  This also skips any children of the file, if the match happens to be a directory.
+.It -p
+Path to scan.  Only one path may be specified at this time.
+.It -C
+Path to configuration file.
+.It -c
+Column string.  Allows you to specify which columns and what order to print them in.  Default is "%p %m %c".
+.It -s
+Sort token.  Sorts by given token.  Tokens are the same as in column strings.  Upper case indicates larger values first, lower case indicates smaller values first.
+.It -f
+Field delimiter.  One or more character.  Defaults to \\t
+.It -r
+Record delimiter.  One or more character.  Defaults to \\n
+.El
+.Pp
+.Pp
+.Sh COLUMN STRINGS
+.Bl -tag -width
+.It The column string lets you specify which fields to print and which order to print them in.
+.It Spaces are spripped out so that column strings are easier to read as they are being created.
+.It Codes are indicated by the '%' character.
+.It Capitol characters are raw values, where lower case characters are more human readable.
+.It The following codes are valid:
+.Bl -tag -width -indent
+.It %
+Use to print a % in the result.  (A double % is escaped.)
+.It p
+The files Absolute path.
+.It A/a
+Time of last access.
+.It M/m
+Time of last modification.
+.It C/c
+Time of last status (rename/permissions) change.
+.It S/s
+Size of file
+.It i
+The file's inode
+.It o
+The file's owner
+.It g
+The file's group
+.It P
+The file's permissions (octal format)
+.It T/t
+The file type (where D is for Directory, L is for Link, S is for Socket, U is for FIFO, B is for Block special, C is for Character special, F is for regular file, and X is for enexpected results).
+.El
+.El
+.Sh IGNORE FILES
+.Pp
+.Pp
+Igore files can be passed as either absolute paths, or as names.  If the file starts with a '/' it will be assumed an absolute path.  Otherwise, it is assumed to just be a file name, and will match any files that are named the same.  If the match is a directory, then all children of that directory will also be ignored.
+.Sh CONFIGURATION FILE
+.Pp
+.Pp
+The first release of
+.Nm
+includes rudimentary support for a configuration file.  The path to the configuration file is passed with the -C option.  Lines that begin with '#' are ignored as comments.  (Note that the '#' must occur in the first position of a line, with nothing, even whitespace before it.)  Spaces are not stripped out, so take care to only use a space if you really mean it.  Boolean keywords take a on, 1, yes, or true to turn them on.  Otherwise, they are turned off.  The following keywords are supported:
+.Bl -tag -width -indent
+.It pathToScan
+The path to scan.  Same as -p above
+.It outputPath
+The path to output the records to.  Same as -o above
+.It printHeaders
+Turns on/off printing of the columns at the top.  Same as -h above.
+.It fieldDelimiter
+Character(s) to print between fields.  Same as -f above.
+.It recordDelimiter
+Character(s) to print between records.  Same as -r above.
+.It sortToken
+How to sort the records.  Same as -s above.
+.It skipDirectories
+Turns on/off skipping of directories.  Same as -D above.
+.It allDisks
+Turns on/off scanning across all disks.  Same as -a above.
+.It verbose
+Turns on/off verbose mode.  Same as -v above.
+.It quietMode
+Turns on/off quiet mode.  Same as -q above.
+.El
+
+.\".Sh FILES                \" File used or created by the topic of the man page
+.\" .Sh DIAGNOSTICS       \" May not be needed
+.\" .Sh BUGS              \" Document known, unremedied bugs 
+.\" .Sh HISTORY           \" Document history if command behaves in a unique manner
